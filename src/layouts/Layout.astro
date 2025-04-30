@@ -7,11 +7,11 @@ const { title = 'Astro Basics', description = '', keywords = '' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="mode-auto">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
@@ -20,8 +20,9 @@ const { title = 'Astro Basics', description = '', keywords = '' } = Astro.props;
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
 	</head>
-	<body class="min-h-screen bg-gray-100">
+	<body class="min-h-screen bg-gray-100 dark:bg-gray-900">
 		<Navbar />
+		
 		<slot />
 		<Footer />
 	</body>

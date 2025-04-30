@@ -13,7 +13,7 @@ const keywords = 'website download,HTML to Markdown,web scraping,content archivi
     
     <DownloadControls />
     
-    <div class="bg-white rounded-xl shadow-lg p-6 mt-6 mb-6 transition-all duration-300 hover:shadow-xl" id="fileListContainer">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6 mb-6 transition-all duration-300 hover:shadow-xl" id="fileListContainer">
       <div class="flex justify-between items-start mb-4">
         <h2 class="text-xl font-semibold text-gray-700">Downloaded Files</h2>
         <button 
@@ -150,7 +150,7 @@ const updateFileList = async () => {
       const htmlFiles = files.filter(file => file.filename.endsWith('.html'));
       
       if (files.length === 0) {
-        fileListElement.innerHTML = '<p class="text-gray-500">暂无下载文件</p>';
+        fileListElement.innerHTML = '<p class="text-gray-500">No downloaded files yet</p>';
         return;
       }
       

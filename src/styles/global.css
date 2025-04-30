@@ -7,3 +7,36 @@ body {
     height: 100%;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+.sun {
+@apply stroke-zinc-500 transition-all duration-300 ease-in-out;
+}
+.moon {
+@apply stroke-transparent transition-all duration-300 ease-in-out;
+}
+.dark .sun {
+@apply stroke-transparent;
+}
+.dark .moon {
+@apply stroke-indigo-300;
+}
+#themeToggle:hover .sun {
+@apply stroke-zinc-700;
+}
+#themeToggle:hover .moon {
+@apply stroke-transparent;
+}
+.dark #themeToggle:hover .sun {
+@apply stroke-transparent;
+}
+.dark #themeToggle:hover .moon {
+@apply stroke-indigo-100;
+}
+
+.dark {
+@apply bg-gray-900 text-gray-100;
+}
+.dark a {
+@apply text-blue-400 hover:text-blue-300;
+}
