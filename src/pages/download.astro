@@ -1,0 +1,609 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DownloadControls from '../components/DownloadControls.astro';
+
+const pageTitle = 'Website Download Tool - Professional Web Content Scraping & Conversion';
+const pageDescription = 'Efficiently download website content and manage files, supports HTML to Markdown conversion, ideal for content archiving and research analysis';
+const keywords = 'website download,HTML to Markdown,web scraping,content archiving,offline reading';
+---
+
+<Layout title={pageTitle} description={pageDescription} keywords={keywords}>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Website Download Tool</h1>
+    
+    <DownloadControls />
+    
+    <div class="bg-white rounded-xl shadow-lg p-6 mt-6 mb-6 transition-all duration-300 hover:shadow-xl" id="fileListContainer">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-xl font-semibold text-gray-700">Downloaded Files</h2>
+        <button 
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors duration-300"
+          id="convertAllBtn"
+        >
+          Convert to Markdown
+        </button>
+      </div>
+      <div class="flex items-center mb-4 gap-4">
+        <div class="flex items-center gap-2">
+          <input type="radio" id="selectAll" name="fileType" value="all" class="mr-1" checked>
+          <label for="selectAll">All</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="radio" id="selectHtml" name="fileType" value="html" class="mr-1">
+          <label for="selectHtml">HTML</label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="radio" id="selectMd" name="fileType" value="md" class="mr-1">
+          <label for="selectMd">MD</label>
+        </div>
+      </div>
+      <div id="fileList" class="space-y-2">
+        <!-- 文件列表将在这里动态生成 -->
+      </div>
+      <div class="flex gap-2 mt-4 justify-end">
+        <button 
+          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors duration-300"
+          id="saveAllBtn"
+        >
+          Save Documents
+        </button>
+        <button 
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors duration-300"
+          id="clearAllBtn"
+        >
+          Clear All
+        </button>
+      </div>
+      <div class="mt-4 text-sm text-gray-600">
+        Downloaded: <span id="downloadCount">0</span>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+
+// 初始化IndexedDB
+const initDB = () => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('WebsiteDownloaderDB', 1);
+    
+    request.onupgradeneeded = (event: any) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('downloadedFiles')) {
+        db.createObjectStore('downloadedFiles', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+    
+    request.onsuccess = (event: any) => {
+      resolve(event.target.result);
+    };
+    
+    request.onerror = (event) => {
+      reject('Failed to initialize IndexedDB');
+    };
+  });
+};
+
+// 清空IndexedDB
+const clearDB = async () => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['downloadedFiles'], 'readwrite');
+    const store = transaction.objectStore('downloadedFiles');
+    const request = store.clear();
+    
+    request.onsuccess = () => {
+      resolve();
+    };
+    
+    request.onerror = (event) => {
+      reject('Failed to clear database');
+    };
+  });
+};
+
+// 保存文件到IndexedDB
+const saveToDB = async (url: any, content: any) => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['downloadedFiles'], 'readwrite');
+    const store = transaction.objectStore('downloadedFiles');
+    
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/').filter(part => part);
+    let filename = pathParts.length > 0 ? pathParts[pathParts.length - 1] : 'index.html';
+    if (!filename.includes('.')) {
+      filename += '.html';
+    }
+    
+    const fileData = {
+      url: url,
+      filename: filename,
+      content: content,
+      timestamp: new Date().toISOString()
+    };
+    
+    const request = store.add(fileData);
+    
+    request.onsuccess = () => {
+      resolve();
+      updateFileList();
+    };
+    
+    request.onerror = () => {
+      reject('保存到数据库失败');
+    };
+  });
+};
+
+// 更新文件列表显示
+const updateFileList = async () => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['downloadedFiles'], 'readonly');
+    const store = transaction.objectStore('downloadedFiles');
+    const request = store.getAll();
+    
+    request.onsuccess = (event) => {
+      const files = event.target.result;
+      const htmlFiles = files.filter(file => file.filename.endsWith('.html'));
+      
+      if (files.length === 0) {
+        fileListElement.innerHTML = '<p class="text-gray-500">暂无下载文件</p>';
+        return;
+      }
+      
+      // 更新HTML文件计数
+      document.getElementById('downloadCount').textContent = htmlFiles.length;
+      
+      fileListElement.innerHTML = files.map(file => `
+        <div class="border-b border-gray-200 pb-2">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <div class="flex items-center">
+                <input type="checkbox" class="file-checkbox mr-2" data-id="${file.id}" checked>
+                <span>${file.filename}</span>
+              </div>
+              <a href="${file.url}" target="_blank" rel="noopener noreferrer" class="text-sm text-gray-600 hover:underline">${file.url}</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-500">${new Date(file.timestamp).toLocaleString()}</span>
+              <button class="text-red-500 hover:text-red-700 delete-btn" data-id="${file.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      resolve();
+    };
+    
+    request.onerror = () => {
+      reject('获取文件列表失败');
+    };
+  });
+};
+
+
+// 更新文件列表显示
+const checkExist = async (url: any) => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['downloadedFiles'], 'readonly');
+    const store = transaction.objectStore('downloadedFiles');
+    const request = store.getAll();
+    
+    request.onsuccess = (event: any) => {
+      const files = event.target.result;
+      const exFiles = files.filter((file: any) => file.url === url);
+      
+      resolve(exFiles.length!== 0);
+    };
+    
+    request.onerror = () => {
+      reject('失败');
+    };
+  });
+};
+
+// 递归下载页面及其链接
+const crawlPage = async (url: any, visitedUrls = new Set(), depth = 0, maxDepth = 1, downloadedCount = 0, retryCount = 0) => {
+  // 检查URL是否已存在于数据库中
+
+  // 检查URL是否已存在
+  const exists = await checkExist(url);
+  console.log('检查结果:', exists); // 打印检查结果
+  if (exists) {
+    console.log(`URL ${url} 已存在，跳过下载`);
+    return;
+  }
+  
+  if (visitedUrls.has(url) || depth > maxDepth || downloadedCount >= 5) {
+    if (downloadedCount >= 5) {
+      alert('已达到最大下载数量5个页面');
+    }
+    return;
+  }
+  
+  visitedUrls.add(url);
+  console.log(`正在下载: ${url}`);
+
+  try {
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error(`HTTP错误: ${response.status}`);
+    
+    const data = await response.json();
+    if (!data.contents) throw new Error('无法获取网页内容');
+    
+    // 重置重试计数器
+    retryCount = 0;
+    
+    // 保存当前页面
+    await saveToDB(url, data.contents);
+    downloadedCount++;
+    document.getElementById('downloadCount').textContent = downloadedCount;
+    
+    if (downloadedCount >= 5) {
+      alert('已达到最大下载数量5个页面');
+      return;
+    }
+    
+    // 解析HTML提取链接
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data.contents, 'text/html');
+    const links = Array.from(doc.querySelectorAll('a[href]'));
+    
+    // 过滤并处理相对链接
+    const baseUrl = new URL(url);
+    console.log('当前页面URL:', baseUrl); // 打印当前页面URL
+    const pageLinks = links
+      .map(link => {
+        try {
+          console.log('原始链接:', link.pathname); // 打印原始链接
+          return url + link.pathname;
+        } catch {
+          return null;
+        }
+      })
+      // .filter(href => href && href.startsWith(baseUrl.origin));
+    
+    // 递归下载链接页面
+    for (const link of pageLinks) {
+      console.log('处理后的链接:', link); // 打印处理后的链接
+      await crawlPage(link, visitedUrls, depth + 1, maxDepth, downloadedCount);
+    }
+  } catch (error) {
+    console.error(`下载页面 ${url} 失败:`, error);
+    
+    // 重试逻辑
+    if (retryCount < 3) {
+      retryCount++;
+      console.log(`下载失败，将在3秒后重试(第${retryCount}次)`);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      return crawlPage(url, visitedUrls, depth, maxDepth, downloadedCount, retryCount);
+    } else {
+      console.error(`页面 ${url} 下载失败，已达到最大重试次数`);
+    }
+  }
+};
+
+function removeTrailingSlash(url: any) {
+  if (!url) {
+    return;
+  }
+    try {
+        const urlObj = new URL(url);
+        // 处理路径末尾斜杠
+        urlObj.pathname = urlObj.pathname.replace(/\/+$/, '');
+        // 根路径特殊处理
+        if (urlObj.pathname === '' && urlObj.search === '' && urlObj.hash === '') {
+            return urlObj.origin;
+        }
+        return urlObj.toString();
+    } catch (e) {
+        // 处理无效URL或相对路径（谨慎使用）
+        return url.replace(/\/+$/, '');
+    }
+}
+
+async function handleDownload(btn: any, retryCount = 1) {
+  const urlInput = document.querySelector('input[type="text"]');
+  const url = removeTrailingSlash(urlInput?.value.trim());
+  console.log('输入的URL:', url); // 打印输入的URL
+  const downloadType = document.querySelector('input[name="downloadType"]:checked')?.value;
+  
+  // 保存URL到localStorage
+  localStorage.setItem('lastDownloadedUrl', url);
+  
+  try {
+    // 添加加载状态
+    const originalText = btn?.textContent;
+    console.log('下载开始:', url, '类型:', downloadType);
+    if (downloadType === 'full') {
+      // 整站下载
+      
+      btn.disabled = true;
+      btn.textContent = '下载中...';
+      await crawlPage(url);
+    } else {
+      // 单页下载
+      // 检查URL是否已存在
+      const exists = await checkExist(url);
+      console.log('检查结果:', exists); // 打印检查结果
+      if (exists) {
+        console.log(`URL ${url} 已存在，跳过下载`);
+        alert('This URL has already been downloaded');
+        return;
+      }
+      if (!url) {
+        alert('Please enter a valid URL');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '下载中...';
+
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      if (!response.ok) throw new Error(`HTTP错误: ${response.status}`);
+      
+      const data = await response.json();
+      if (data.contents) {
+        await saveToDB(url, data.contents);
+      } else {
+        throw new Error('无法获取网页内容');
+      }
+    }
+    
+    // 更新文件列表
+    await updateFileList();
+    
+    // 恢复按钮状态
+    btn.disabled = false;
+    btn.textContent = originalText;
+  } catch (error: any) {
+    console.error('下载失败:', error);
+    if (retryCount < 3) {
+      retryCount++;
+      console.log(`下载失败，将在3秒后重试(第${retryCount}次)`);
+      setTimeout(() => handleDownload(btn, retryCount), 3000);
+      return;
+    }
+    alert(`下载失败: ${error.message}`);
+    
+    // 确保按钮状态恢复
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '下载';
+    }
+  }
+}
+
+// 保存选中的文件
+const saveAllFiles = async () => {
+  try {
+    const db = await initDB();
+    const transaction = db.transaction(['downloadedFiles'], 'readonly');
+    const store = transaction.objectStore('downloadedFiles');
+    const request = store.getAll();
+    
+    request.onsuccess = (event) => {
+      const files = event.target.result;
+      const selectedFiles = files.filter(file => {
+        const checkbox = document.querySelector(`.file-checkbox[data-id="${file.id}"]`);
+        return checkbox?.checked;
+      });
+      
+      if (selectedFiles.length === 0) {
+        alert('请至少选择一个文件');
+        return;
+      }
+      
+      selectedFiles.forEach(file => {
+        const blob = new Blob([file.content], { type: 'text/html' });
+        const downloadUrl = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = file.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(downloadUrl);
+      });
+      
+      alert(`已保存${selectedFiles.length}个文件`);
+    };
+    
+    request.onerror = () => {
+      throw new Error('获取文件列表失败');
+    };
+  } catch (error) {
+    console.error('保存选中的文件失败:', error);
+    alert(`保存选中的文件失败: ${error.message}`);
+  }
+};
+
+// 批量转换所有文件为Markdown
+function convertAllToMarkdown() {
+  if (!confirm('Are you sure you want to convert all files to Markdown format?')) {
+    return;
+  }
+  
+  (async () => {
+    try {
+      const db = await initDB();
+      const transaction = db.transaction(['downloadedFiles'], 'readwrite');
+      const store = transaction.objectStore('downloadedFiles');
+      const request = store.getAll();
+      
+      request.onsuccess = async (event) => {
+        const files = event.target.result;
+        
+        if (files.length === 0) {
+          alert('没有可转换的文件');
+          return;
+        }
+        
+        var convert_size = 0
+        for (const file of files) {
+          // 只对HTML文件进行转换
+          if (!file.filename.endsWith('.html')) {
+            continue;
+          }
+          
+          await new Promise((resolve) => {
+            const getRequest = store.get(file.id);
+            
+            getRequest.onsuccess = (e) => {
+              const f = e.target.result;
+              if (!f) {
+                resolve();
+                return;
+              }
+              
+              let markdown = f.content
+                .replace(/<h1[^>]*>(.*?)<\/h1>/g, '# $1\n\n')
+                .replace(/<h2[^>]*>(.*?)<\/h2>/g, '## $1\n\n')
+                .replace(/<h3[^>]*>(.*?)<\/h3>/g, '### $1\n\n')
+                .replace(/<p[^>]*>(.*?)<\/p>/g, '$1\n\n')
+                .replace(/<a href="([^"]*)"[^>]*>(.*?)<\/a>/g, '[$2]($1)')
+                .replace(/<img[^>]*src="([^"]*)"[^>]*>/g, '![]($1)')
+                .replace(/<[^>]+>/g, '');
+              
+              // 创建新的MD文件记录而不是覆盖原文件
+              const mdFile = {
+                url: f.url,
+                filename: f.filename.replace('.html', '.md'),
+                content: markdown,
+                timestamp: new Date().toISOString()
+              };
+              const addRequest = store.add(mdFile);
+              addRequest.onsuccess = () => resolve();
+              addRequest.onerror = () => resolve();
+              convert_size = convert_size + 1
+            };
+            
+            getRequest.onerror = () => resolve();
+          });
+        }
+        
+        updateFileList();
+        alert(`已成功转换${convert_size}个文件`);
+      };
+      
+      request.onerror = () => {
+        throw new Error('获取文件列表失败');
+      };
+    } catch (error) {
+      console.error('批量转换失败:', error);
+      alert(`批量转换失败: ${error.message}`);
+    }
+  })();
+}
+
+// 清空所有文件
+const clearAllFiles = async () => {
+  if (!confirm('Are you sure you want to clear all downloaded files? This cannot be undone!')) {
+    return;
+  }
+  
+  try {
+    await clearDB();
+    updateFileList();
+    alert('已清空所有文件');
+  } catch (error) {
+    console.error('清空文件失败:', error);
+    alert(`清空文件失败: ${error.message}`);
+  }
+};
+
+// 删除单个文件
+const deleteFile = async (event: any) => {
+  event.stopPropagation();
+  const target = event.target.closest('.delete-btn');
+  if (!target) return;
+  
+  const fileId = target.getAttribute('data-id');
+  
+  if (!confirm('Are you sure you want to delete this file?')) {
+    return;
+  }
+  
+  try {
+    const db = await initDB();
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(['downloadedFiles'], 'readwrite');
+      const store = transaction.objectStore('downloadedFiles');
+      const request = store.delete(Number(fileId));
+      
+      request.onsuccess = () => {
+        resolve();
+        updateFileList();
+      };
+      
+      request.onerror = () => {
+        reject('删除文件失败');
+      };
+    });
+  } catch (error) {
+    console.error('删除文件失败:', error);
+    alert(`删除文件失败: ${error}`);
+  }
+};
+
+let fileListElement: any;
+document.addEventListener('DOMContentLoaded', () => {
+  fileListElement = document.getElementById('fileList');
+  // 从localStorage恢复URL
+  const lastUrl = localStorage.getItem('lastDownloadedUrl');
+  if (lastUrl) {
+    const urlInput = document.querySelector('input[type="text"]');
+    if (urlInput) {
+      urlInput.value = lastUrl;
+    }
+  }
+  
+  document.getElementById('downloadBtn')?.addEventListener('click', (e: any) => handleDownload(e.target));
+  document.getElementById('saveAllBtn')?.addEventListener('click', saveAllFiles);
+  document.getElementById('clearAllBtn')?.addEventListener('click', clearAllFiles);
+  document.getElementById('convertAllBtn')?.addEventListener('click', convertAllToMarkdown);
+  // 按文件类型选择
+  document.querySelectorAll('input[name="fileType"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const type = e.target.value;
+      const checkboxes = document.querySelectorAll('.file-checkbox');
+      
+      checkboxes.forEach(checkbox => {
+        const fileId = checkbox.getAttribute('data-id');
+        const fileElement = checkbox.closest('.border-b');
+        const filename = fileElement?.querySelector('span')?.textContent || '';
+        
+        if (type === 'all') {
+          checkbox.checked = true;
+        } else if (type === 'html') {
+          checkbox.checked = filename.endsWith('.html');
+        } else if (type === 'md') {
+          checkbox.checked = filename.endsWith('.md');
+        }
+      });
+    });
+  });
+  updateFileList();
+  
+  // 使用事件委托处理删除按钮点击
+  document.getElementById('fileListContainer')?.addEventListener('click', (event) => {
+    const deleteBtn = event.target.closest('.delete-btn');
+    if (deleteBtn) {
+      deleteFile(event);
+    }
+  });
+
+});
+
+</script>

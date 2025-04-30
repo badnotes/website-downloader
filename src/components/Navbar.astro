@@ -1,0 +1,34 @@
+---
+---
+
+<nav class="bg-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex">
+        <div class="flex-shrink-0 flex items-center">
+          <a href="/" class="text-xl font-bold text-gray-800"><img src="/logo.svg" alt="Logo" class="h-8 w-8 mr-2" /></a>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <a 
+          href="/" 
+          class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+          class:list={{
+            'text-blue-600 bg-gray-100': Astro.url.pathname === '/' 
+          }}
+        >
+          Home
+        </a>
+        <a 
+          href="/download" 
+          class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+          class:list={{
+            'text-blue-600 bg-gray-100': Astro.url.pathname === '/download' 
+          }}
+        >
+          Download
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>

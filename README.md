@@ -1,48 +1,68 @@
-# Astro Starter Kit: Basics
+# Website Downloader with HTML to Markdown Conversion
 
-```sh
-npm create astro@latest -- --template basics
+A powerful tool to download entire websites and convert HTML content to Markdown format while preserving all resources and structure.
+
+## Features
+
+- **Batch Downloading**: Download multiple web pages at once
+- **HTML to Markdown Conversion**: Convert downloaded HTML files to clean Markdown
+- **File Management**: Organize and manage downloaded files
+- **Resource Preservation**: Maintains all CSS, JavaScript and media files
+
+## Installation
+
+1. Clone this repository:
+```bash
+git clone https://github.com/your-repo/website-downloader.git
+```
+2. Install dependencies:
+```bash
+npm install
+```
+3. Start the development server:
+```bash
+npm run dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Usage
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+1. Enter the target website URL in the download page
+2. Click "Download" to start downloading
+3. Use the "Convert to Markdown" button to transform HTML files
+4. Manage your downloaded files through the file list interface
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Examples
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+### Download a single page
+```javascript
+// Example API call
+await downloadPage('https://example.com/page1');
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+### Convert HTML to Markdown
+```javascript
+// Convert all downloaded HTML files to Markdown
+await convertAllToMarkdown();
+```
 
-## 🧞 Commands
+## Contributing
 
-All commands are run from the root of the project, from a terminal:
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## License
 
-## 👀 Want to learn more?
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Copyright [yyyy] [name of copyright owner]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
