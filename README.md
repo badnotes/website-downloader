@@ -13,7 +13,7 @@ A powerful tool to download entire websites and convert HTML content to Markdown
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/your-repo/website-downloader.git
+git clone https://github.com/badnotes/website-downloader.git
 ```
 2. Install dependencies:
 ```bash
