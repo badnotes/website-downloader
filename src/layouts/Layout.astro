@@ -19,6 +19,15 @@ const { title = 'Astro Basics', description = '', keywords = '' } = Astro.props;
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
+		<script async src={`https://www.googletagmanager.com/gtag/js?id=G-37TNQF51BT`}></script>
+		<script type="text/partytown">
+			window.dataLayer = window.dataLayer || []
+			function gtag() {
+				dataLayer.push(arguments) // eslint-disable-line
+			}
+			gtag('js', new Date())
+			gtag('config', 'G-37TNQF51BT')
+		</script>
 	</head>
 	<body class="min-h-screen bg-gray-100 dark:bg-gray-900">
 		<Navbar />
