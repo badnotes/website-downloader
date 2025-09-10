@@ -4,13 +4,13 @@ import ThemeIcon from './Theme.astro';
 
 
 <!-- 导航栏 -->
-<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800" role="banner">
     <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
+        <nav class="flex justify-between items-center py-4" role="navigation" aria-label="Main navigation">
             <div class="flex items-center space-x-2">
             <div class="flex-shrink-0 flex items-center">
-                <a href="/" class="text-xl font-bold text-gray-800 dark:text-gray-200">
-                <div class="flex"><img src="/logo.svg" alt="Logo" class="h-8 w-8 mr-2" />
+                <a href="/" class="text-xl font-bold text-gray-800 dark:text-gray-200" aria-label="SiteDowner homepage">
+                <div class="flex"><img src="/logo.svg" alt="SiteDowner Logo" class="h-8 w-8 mr-2" />
                 SiteDowner
                 </div>
                 </a>
@@ -19,28 +19,28 @@ import ThemeIcon from './Theme.astro';
 
             <div class="hidden md:flex items-center space-x-8">
                 <a href="/#features" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Features</a>
-                <a href="/#how-it-works" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Usage Guide</a>
+                <a href="/#how-it-works" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">How to Use</a>
                 <a href="/#faq" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">FAQ</a>
                 <ThemeIcon />
-                <a href="/downer" class="bg-primary-500 dark:bg-blue-400/30 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">Free use</a>
+                <a href="/downer" class="bg-primary-500 dark:bg-blue-400/30 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">Get Started</a>
             </div>
 
             <div class="md:hidden flex items-center space-x-4">
                 <ThemeIcon />
-                <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300">
+                <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
-        </div>
+        </nav>
     </div>
 
     <!-- 移动端菜单 -->
-    <div id="mobile-menu" class="hidden md:hidden py-4 px-4 border-t border-gray-200 dark:border-gray-800">
+    <div id="mobile-menu" class="hidden md:hidden py-4 px-4 border-t border-gray-200 dark:border-gray-800" role="menu" aria-labelledby="mobile-menu-button">
         <div class="flex flex-col space-y-4">
-            <a href="/#features" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Features</a> 
-            <a href="/#how-it-works" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Usage Guide</a> 
-            <a href="/#faq" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">FAQ</a> 
-            <a href="/downer" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium text-center transition-colors">Free use</a>
+            <a href="/#features" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors" role="menuitem">Features</a> 
+            <a href="/#how-it-works" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors" role="menuitem">How to Use</a> 
+            <a href="/#faq" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors" role="menuitem">FAQ</a> 
+            <a href="/downer" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium text-center transition-colors" role="menuitem">Convert Website to Markdown</a>
         </div>
     </div>
 </header>
