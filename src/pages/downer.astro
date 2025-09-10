@@ -680,7 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateFileList();
   
   // 使用事件委托处理删除按钮点击
-  document.getElementById('fileListContainer')?.addEventListener('click', (event) => {
+  document.getElementById('fileList')?.addEventListener('click', (event) => {
     const deleteBtn = event.target.closest('.delete-btn');
     if (deleteBtn) {
       deleteFile(event);
