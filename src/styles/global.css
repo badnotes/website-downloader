@@ -7,6 +7,21 @@ body {
     height: 100%;
 }
 
+@theme {
+    --color-primary-50: #f0f9ff;
+    --color-primary-100: #e0f2fe;
+    --color-primary-200: #bae6fd;
+    --color-primary-300: #7dd3fc;
+    --color-primary-400: #38bdf8;
+    --color-primary-500: #0ea5e9;
+    --color-primary-600: #0284c7;
+    --color-primary-700: #0369a1;
+    --color-primary-800: #075985;
+    --color-primary-900: #0c4a6e;
+
+    --font-family-sans: 'Inter', 'system-ui', 'sans-serif';
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 .sun {
@@ -40,3 +55,97 @@ body {
 .dark a {
 @apply text-blue-400 hover:text-blue-300;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.dark .gradient-bg {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.hero-pattern {
+    background-color: #eef2ff;
+    opacity: 0.8;
+    background-image:  radial-gradient(#0ea5e9 0.5px, transparent 0.5px), radial-gradient(#0ea5e9 0.5px, #eef2ff 0.5px);
+    background-size: 20px 20px;
+    background-position: 0 0,10px 10px;
+}
+
+.dark .hero-pattern {
+    background-color: #0f172a;
+    background-image:  radial-gradient(#0ea5e9 0.5px, transparent 0.5px), radial-gradient(#0ea5e9 0.5px, #0f172a 0.5px);
+}
+
+        
+        .tab-active {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+            color: white;
+        }
+        
+        .dark .tab-active {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+            color: white;
+        }
+        
+        .download-option {
+            transition: all 0.2s ease;
+        }
+        
+        .download-option:hover {
+            background-color: #f0f9ff;
+            border-color: #0ea5e9;
+        }
+        
+        .dark .download-option:hover {
+            background-color: #082f49;
+            border-color: #0ea5e9;
+        }
+
+                
+        .download-option.checked {
+            background-color: #f0f9ff;
+            border-color: #0ea5e9;
+        }
+        
+        .dark .download-option.checked {
+            background-color: #082f49;
+            border-color: #0ea5e9;
+        }
+        
+        
+        .empty-state {
+            background: repeating-linear-gradient(
+                45deg,
+                #f8fafc,
+                #f8fafc 10px,
+                #f1f5f9 10px,
+                #f1f5f9 20px
+            );
+        }
+        
+        .dark .empty-state {
+            background: repeating-linear-gradient(
+                45deg,
+                #1e293b,
+                #1e293b 10px,
+                #334155 10px,
+                #334155 20px
+            );
+        }

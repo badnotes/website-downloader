@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import DownloadControls from '../components/DownloadControls.astro';
 
 const pageTitle = 'Website Download Tool - Professional Web Content Scraping & Conversion';
 const pageDescription = 'Efficiently download website content and manage files, supports HTML to Markdown conversion, ideal for content archiving and research analysis';
@@ -8,60 +7,144 @@ const keywords = 'website download,HTML to Markdown,web scraping,content archivi
 ---
 
 <Layout title={pageTitle} description={pageDescription} keywords={keywords}>
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">Website Download Tool</h1>
-    
-    <DownloadControls />
-    
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mt-6 mb-6 transition-all duration-300 hover:shadow-xl" id="fileListContainer">
-      <div class="flex justify-between items-start mb-4">
-        <h2 class="text-xl font-semibold text-gray-700">Downloaded Files</h2>
-        <button 
-          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors duration-300"
-          id="convertAllBtn"
-        >
-          Convert to Markdown
-        </button>
-      </div>
-      <div class="flex items-center mb-4 gap-4">
-        <div class="flex items-center gap-2">
-          <input type="radio" id="selectAll" name="fileType" value="all" class="mr-1" checked>
-          <label for="selectAll">All</label>
+      <main class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-6 gap-8 mt-8">
+            <!-- 左侧面板：下载选项 -->
+            <div id="download" class="col-span-4 space-y-8">
+                <div class="">
+                    <!-- URL输入卡片 -->
+                    <div class="col-span-3 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 fade-in">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                            <i class="fas fa-link text-primary-500 mr-3"></i>
+                            Website Download
+                        </h2>
+                        
+                        <div class="grid grid-cols-10 gap-3">
+                            <div class="col-span-4 mb-6">
+                                <label class="text-md font-semibold block text-gray-700 dark:text-gray-300">Download Options</label>
+                                <div class="grid grid-cols-2 gap-4 mt-3">
+                                    <div class="flex items-center justify-center download-option checked border-2 border-gray-200 dark:border-gray-700 rounded-lg p-2 text-center cursor-pointer">
+                                        <i class="fas fa-file-alt text-2xl text-primary-500 mr-2"></i>
+                                        <p class="font-medium">Single Page</p>
+                                    </div>
+                                    <div class="flex items-center justify-center download-option border-2 border-gray-200 dark:border-gray-700 rounded-lg p-2 text-center cursor-pointer">
+                                        <i class="fas fa-globe text-2xl text-primary-500 mr-2"></i>
+                                        <p class="font-medium">Whole Site</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-6 mb-6">
+                                <label for="website-url" class="text-md font-semibold block text-gray-700 dark:text-gray-300">Website URL</label>
+                                <div class="flex mt-3">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm">
+                                        https://
+                                    </span>
+                                    <input type="text" id="website-url" class="border flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-primary-500 focus:border-primary-500" placeholder="example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="downloadBtn" class="w-48 bg-primary-500 hover:bg-primary-600 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center cursor-pointer ml-auto">
+                            <i class="fas fa-download mr-2"></i>
+                            Start Download
+                        </button>
+                    </div>
+                </div>
+                
+                
+                <!-- 已下载文件卡片 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-50 fade-in">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                            <i class="fas fa-folder-open text-primary-500 mr-3"></i>
+                            Downloaded Files
+                        </h2>
+                        Downloaded: <span id="downloadCount" class="text-sm text-gray-500 dark:text-gray-400">0</span>
+                    </div>
+                    
+                    <div id="fileList" class="empty-state rounded-lg p-8 text-center">
+                        <i class="fas fa-inbox text-4xl text-gray-300 dark:text-gray-600 mb-3"></i>
+                        <p class="text-gray-500 dark:text-gray-400">No downloaded files</p>
+                        <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Downloaded files will be displayed here</p>
+                    </div>
+
+                    <!-- 文件操作 -->
+                    <div id="convert" class="bg-white dark:bg-gray-800 fade-in">
+                        <label class="text-md font-semibold block text-gray-700 dark:text-gray-300 mt-6 mb-2">
+                            File Operations
+                        </label>
+                        <div class="flex items-center gap-4">
+                            <button id="convertAllBtn" class="w-full bg-gray-400/80 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center cursor-pointer">
+                                <i class="fa-solid fa-bars-staggered mr-2"></i>
+                                Convert to Markdown
+                            </button>
+                            <button id="saveAllBtn" class="w-full flex items-center justify-center py-3 px-4 bg-primary-500/80 hover:bg-primary-500 dark:bg-primary-600/80 dark:hover:bg-primary-600 rounded-lg font-medium transition-colors cursor-pointer">
+                                <i class="fas fa-download text-primary-700 mr-3"></i>
+                                <span>Save Files</span>
+                            </button>
+                            <button id="clearAllBtn" class="w-full bg-red-400/80 hover:bg-red-400 dark:bg-red-300/80 dark:hover:bg-red-300 text-red-600 dark:text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center cursor-pointer">
+                                <i class="fas fa-trash-alt mr-2"></i>
+                                Clear All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧面板：URL输入和转换选项 -->
+            <div class="col-span-2 space-y-8">
+                <!-- 功能特性 -->
+                <div id="features" class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 fade-in">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <i class="fas fa-star text-primary-500 mr-3"></i>
+                        Features
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-primary-100 dark:bg-primary-900/30 rounded-lg p-2 mr-4">
+                                <i class="fas fa-bolt text-primary-600 dark:text-primary-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Fast Download</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Efficiently download web content, saving you time</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-primary-100 dark:bg-primary-900/30 rounded-lg p-2 mr-4">
+                                <i class="fas fa-shield-alt text-primary-600 dark:text-primary-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Privacy Protection</h3>
+                                <p class="text-gray-600 dark:text-gray-400">All processing is done locally, protecting your privacy</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-primary-100 dark:bg-primary-900/30 rounded-lg p-2 mr-4">
+                                <i class="fas fa-file-code text-primary-600 dark:text-primary-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white">Format Preservation</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Accurately convert formats, preserving original layout</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="flex items-center gap-2">
-          <input type="radio" id="selectHtml" name="fileType" value="html" class="mr-1">
-          <label for="selectHtml">HTML</label>
-        </div>
-        <div class="flex items-center gap-2">
-          <input type="radio" id="selectMd" name="fileType" value="md" class="mr-1">
-          <label for="selectMd">MD</label>
-        </div>
-      </div>
-      <div id="fileList" class="space-y-2">
-        <!-- 文件列表将在这里动态生成 -->
-      </div>
-      <div class="flex gap-2 mt-4 justify-end">
-        <button 
-          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors duration-300"
-          id="saveAllBtn"
-        >
-          Save Documents
-        </button>
-        <button 
-          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors duration-300"
-          id="clearAllBtn"
-        >
-          Clear All
-        </button>
-      </div>
-      <div class="mt-4 text-sm text-gray-600">
-        Downloaded: <span id="downloadCount">0</span>
-      </div>
-    </div>
-  </main>
+    </main>
 </Layout>
 
 <script>
+    const downloadOptions = document.querySelectorAll('.download-option');
+    downloadOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            downloadOptions.forEach(opt => opt.classList.remove('checked'));
+            option.classList.add('checked');
+        });
+    });
 
 // 初始化IndexedDB
 const initDB = () => {

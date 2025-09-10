@@ -19,6 +19,7 @@ const { title = 'Astro Basics', description = '', keywords = '' } = Astro.props;
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 		<script async src={`https://www.googletagmanager.com/gtag/js?id=G-37TNQF51BT`}></script>
 		<script type="text/partytown">
 			window.dataLayer = window.dataLayer || []
@@ -29,9 +30,8 @@ const { title = 'Astro Basics', description = '', keywords = '' } = Astro.props;
 			gtag('config', 'G-37TNQF51BT')
 		</script>
 	</head>
-	<body class="min-h-screen bg-gray-100 dark:bg-gray-900">
+	<body class="bg-white dark:bg-gray-900/90 text-gray-800 dark:text-gray-200 transition-colors duration-300">
 		<Navbar />
-		
 		<slot />
 		<Footer />
 	</body>

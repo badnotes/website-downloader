@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
 
 const pageTitle = 'Professional Website Download & Conversion markdown Tool - Preserve Original Structure and Resource Files';
 const pageDescription = 'Download website content and convert to Markdown format with one click, preserving original structure and resources, ideal for content archiving, offline reading and research analysis';
@@ -7,58 +8,161 @@ const keywords = 'website download,HTML to Markdown,web archiving,offline readin
 ---
 
 <Layout title={pageTitle} description={pageDescription} keywords={keywords}>
+  <Hero />
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-50 to-indigo-100  dark:from-gray-400 dark:to-indigo-800 rounded-xl shadow-lg p-12 mt-12 mb-12 text-indigo-900 ">
-      <h1 class="text-3xl md:text-5xl font-bold mb-6">Professional Website Download & Conversion Tool</h1>
-      <p class="text-xl mb-8 max-w-3xl">
-        Download website content and convert to Markdown format with one click, preserving original structure and resources
-      </p>
-      <a 
-        href="/downer" 
-        class="inline-block bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300"
-      >
-        Start Now
-      </a>
-    </div>
-    
-    <!-- Feature Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-        <div class="text-blue-500 text-4xl mb-4">🚀</div>
-        <h2 class="text-2xl font-semibold mb-4 dark:text-neutral-500">Efficient Download</h2>
-        <p class="text-gray-600 mb-4">
-          This is a professional website download tool that helps you quickly download entire websites, including HTML, CSS, JavaScript and other resource files.
-        </p>
-      </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-        <div class="text-blue-500 text-4xl mb-4">🔧</div>
-        <h2 class="text-2xl font-semibold mb-4 dark:text-neutral-500">Core Features</h2>
-        <ul class="list-disc pl-5 text-gray-600 mb-4">
-          <li>Full website download</li>
-          <li>HTML to Markdown</li>
-          <li>Batch file management</li>
-        </ul>
-      </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
-        <div class="text-blue-500 text-4xl mb-4">📚</div>
-        <h2 class="text-2xl font-semibold mb-4 dark:text-neutral-500">Simple Usage</h2>
-        <ul class="list-decimal pl-6 text-gray-600 space-y-2">
-          <li>Enter target website URL on download page</li>
-          <li>Click download button to start</li>
-        </ul>
-      </div>
-    </div>  
+    <!-- 功能特性 -->
+    <section id="features" class="py-16 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose <span class="text-primary-600 dark:text-primary-400">SiteDowner</span>?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">We provide the simplest and most accurate website to Markdown conversion service, meeting your various needs</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 特性1 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md feature-card transition-all duration-300 fade-in">
+                    <div class="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bolt text-2xl text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Quick Conversion</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Convert entire web pages to neatly formatted Markdown documents in just a few seconds, significantly improving your work efficiency.</p>
+                </div>
+                
+                <!-- 特性2 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md feature-card transition-all duration-300 fade-in">
+                    <div class="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Privacy Protection</h3>
+                    <p class="text-gray-600 dark:text-gray-300">We do not store any of your data or conversion content, all processing is done on your browser, ensuring your privacy security.</p>
+                </div>
+                
+                <!-- 特性3 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md feature-card transition-all duration-300 fade-in">
+                    <div class="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-lock-open text-2xl text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Free and Unlimited</h3>
+                    <p class="text-gray-600 dark:text-gray-300">No hidden fees, no subscription requirements, no usage limits, completely free online services, available anytime and anywhere.</p>
+                </div>
+                
+                <!-- 特性4 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md feature-card transition-all duration-300 fade-in">
+                    <div class="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-magic text-2xl text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Smart Formatting</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Intelligent identification of headings, lists, code blocks, etc., maintaining the accuracy of original formats, reducing post-editing work.</p>
+                </div>
+                
+                <!-- 特性5 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md feature-card transition-all duration-300 fade-in">
+                    <div class="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-desktop text-2xl text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Responsive Design</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Works perfectly on any device, desktop, tablet, or mobile, providing consistent user experience.</p>
+                </div>
+                
+                <!-- 特性6 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md feature-card transition-all duration-300 fade-in">
+                    <div class="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-download text-2xl text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">One-Click Download</h3>
+                    <p class="text-gray-600 dark:text-gray-300">After conversion, download the Markdown file to your local device with a single click, or copy it to the clipboard for easy use.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="bg-gradient-to-r bg-gray-50 dark:bg-gray-800 rounded-xl shadow-lg p-12 mt-12 mb-12 w-full">
-      <div class="text-center">
-        <a href="/downer" class="inline-block bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300">
-          Get Started
-        </a>
-      </div>
-    </div>
+    <!-- 使用指南 -->
+    <section id="how-it-works" class="py-16 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">How to Use <span class="text-primary-600 dark:text-primary-400">SiteDowner</span>?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Simply follow these three steps to convert web pages to Markdown documents</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8">
+                <!-- 步骤1 -->
+                <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center fade-in">
+                    <div class="bg-primary-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">1</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Enter URL</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Copy the URL of the web page you want to convert, paste it into the input box. Supports all major websites and news, blog platforms.</p>
+                </div>
+                
+                <!-- 步骤2 -->
+                <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center fade-in">
+                    <div class="bg-primary-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">2</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Click Convert</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Click the "Convert to Markdown" button, and the system will automatically fetch and parse the web page content, maintaining the original format and structure.</p>
+                </div>
+                
+                <!-- 步骤3 -->
+                <div class="flex-1 bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center fade-in">
+                    <div class="bg-primary-500 text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">3</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Download Result</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Preview the conversion results, and then click the "Download" button to save the Markdown file to your local device. You can also copy the content to the clipboard for easy use.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <a href="/downer" class="bg-primary-500 dark:bg-blue-400/30 hover:bg-primary-600 text-white px-8 py-3 rounded-lg font-medium transition-colors inline-flex items-center">
+                    <span>Get Started</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section id="faq" class="py-16 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Common Questions</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">About common questions about SiteDowner</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- 问题1 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md fade-in">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                        <i class="fas fa-question-circle text-primary-500 mr-2"></i>
+                        Is SiteDowner free?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">Yes, SiteDowner is completely free to use. There are no hidden fees or subscription requirements. You can use our service unlimited times without registering an account.</p>
+                </div>
+                
+                <!-- 问题2 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md fade-in">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                        <i class="fas fa-question-circle text-primary-500 mr-2"></i>
+                        Does SiteDowner save my data?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">No. We prioritize user privacy. All conversion operations are performed in the browser, and your data is not uploaded to our server. We do not save any of the content you convert.</p>
+                </div>
+                
+                <!-- 问题3 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md fade-in">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                        <i class="fas fa-question-circle text-primary-500 mr-2"></i>
+                        Which websites are supported?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">SiteDowner supports most news websites, blog platforms, document pages, etc. If you encounter unsupported websites, please contact us, and we will add support as soon as possible.</p>
+                </div>
+                
+                <!-- 问题4 -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-md fade-in">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                        <i class="fas fa-question-circle text-primary-500 mr-2"></i>
+                        How accurate is the conversion?
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300">Our conversion algorithm is carefully optimized to accurately identify headings, paragraphs, lists, code blocks, etc. Common elements. For complex layout web pages, conversion results may require a little manual adjustment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     
   </main>
 </Layout>

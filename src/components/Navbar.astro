@@ -2,39 +2,74 @@
 import ThemeIcon from './Theme.astro';
 ---
 
-<nav class="bg-white shadow-md dark:bg-gray-700 dark:shadow-gray-600">
-  <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-    <div class="flex justify-between h-16">
-      <div class="flex">
-        <div class="flex-shrink-0 flex items-center">
-          <a href="/" class="text-xl font-bold text-gray-800 dark:text-gray-200">
-            <div class="flex"><img src="/logo.svg" alt="Logo" class="h-8 w-8 mr-2" />
-            SiteDowner
+
+<!-- 导航栏 -->
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center space-x-2">
+            <div class="flex-shrink-0 flex items-center">
+                <a href="/" class="text-xl font-bold text-gray-800 dark:text-gray-200">
+                <div class="flex"><img src="/logo.svg" alt="Logo" class="h-8 w-8 mr-2" />
+                SiteDowner
+                </div>
+                </a>
             </div>
-          </a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/#features" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Features</a>
+                <a href="/#how-it-works" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Usage Guide</a>
+                <a href="/#faq" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">FAQ</a>
+                <ThemeIcon />
+                <a href="/downer" class="bg-primary-500 dark:bg-blue-400/30 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">Free use</a>
+            </div>
+
+            <div class="md:hidden flex items-center space-x-4">
+                <ThemeIcon />
+                <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="flex items-center">
-        <a 
-          href="/" 
-          class="mx-1 px-2 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-          class:list={{
-            'text-blue-600 bg-gray-100 dark:bg-gray-800': Astro.url.pathname === '/' 
-          }}
-        >
-          Site
-        </a>
-        <a 
-          href="/downer" 
-          class="mx-1 px-2 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-          class:list={{
-            'text-blue-600 bg-gray-100 dark:bg-gray-800': Astro.url.pathname === '/downer' || Astro.url.pathname === '/downer/'
-          }}
-        >
-          Downer
-        </a>
-        <ThemeIcon />
-      </div>
     </div>
-  </div>
-</nav>
+
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="hidden md:hidden py-4 px-4 border-t border-gray-200 dark:border-gray-800">
+        <div class="flex flex-col space-y-4">
+            <a href="/#features" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Features</a> 
+            <a href="/#how-it-works" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Usage Guide</a> 
+            <a href="/#faq" class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">FAQ</a> 
+            <a href="/downer" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium text-center transition-colors">Free use</a>
+        </div>
+    </div>
+</header>
+
+<script>
+     // 移动端菜单
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuButton?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+    });
+    
+    // 滚动动画
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+    });
+</script>
